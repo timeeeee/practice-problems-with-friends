@@ -1,1 +1,1 @@
-# practice-problems-with-friends
+Rayyan and Tim do programming practice problems
