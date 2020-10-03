@@ -5,13 +5,29 @@ METHOD 1
 3) Add saved values
 '''
 
-a = 0
-b = 1
-s = 0
-while b <= 4000000:
-    if b%2 == 0:
+a, b, s = 0, 1, 0 #First fib value, second fib value, current sum
+while b <= 4000000: #Boundary for sum
+    if b % 2 == 0: #Determines if next fib value is even. If so, add it to sum
         s = s + b
     a, b = b, a+b
-print("Method 1: " + str(s))
+print("Method 1: " + str(s)) #Prints final sum
 
+'''
+METHOD 2: Same as method 1, but with functions
+'''
 
+from math import factorial as fact
+
+def fib(n):
+    pass
+
+'''
+while True:
+    final_result = 0
+    for n in range(0, 4000001):
+        print fib(n)
+        if fib(n) % 2 == 0:
+            final_result = final_result + fib(n)
+    print("Method 2: " + str(final_result))
+    break
+'''
