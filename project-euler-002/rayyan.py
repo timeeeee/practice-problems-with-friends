@@ -1,3 +1,4 @@
+from math import factorial as fact
 '''
 METHOD 1
 1) Generate fibonacci sequence
@@ -5,18 +6,16 @@ METHOD 1
 3) Add saved values
 '''
 
-a, b, s = 0, 1, 0 #First fib value, second fib value, current sum
-while b <= 4000000: #Boundary for sum
-    if b % 2 == 0: #Determines if next fib value is even. If so, add it to sum
+a, b, s = 0, 1, 0  # First fib value, second fib value, current sum
+while b <= 4000000:  # Boundary for sum
+    if b % 2 == 0:  # Determines next fib value is even. If so, add it to sum
         s = s + b
     a, b = b, a+b
-print("Method 1: " + str(s)) #Prints final sum
+print("Method 1: " + str(s))  # Prints final sum
 
 '''
 METHOD 2: Same as method 1, but with functions
 '''
-
-from math import factorial as fact
 
 def fib(n):
     pass

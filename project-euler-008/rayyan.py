@@ -8,19 +8,17 @@ METHOD 1
 6) Print out the highest product
 '''
 
-#Read in number
+# Read in number
 n = open('number.txt', 'r')
 number = n.read()
 n.close()
 
-#Loop through number
+# Loop through number
 highest_product = 0
-for i in range(len(number)-13): 
+for i in range(len(number)-13):
     temp_product = 1
     for x in range(13):
         temp_product = temp_product * int(number[x+i])
     if temp_product > highest_product:
         highest_product = temp_product
 print("Method 1: " + str(highest_product))
-
-
