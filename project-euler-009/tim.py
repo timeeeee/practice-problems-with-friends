@@ -99,6 +99,7 @@ def coprimes_to_pythagorean_triple(m, n):
     a = m**2 - n**2
     b = 2 * m * n
     c = m**2 + n**2
+
     if a > b:
         a, b = b, a
 
@@ -106,6 +107,25 @@ def coprimes_to_pythagorean_triple(m, n):
 
 
 def primitive_triple_generator(maximum):
+    # yield from primitive_triple_generator_recursive((2, 1), maximum)
+    yield from primitive_triple_generator_iterative(maximum)
+
+
+def primitive_triple_generator_recursive(node, maximum):
+    m, n = node
+    triple = coprimes_to_pythagorean_triple(m, n)
+    if sum(triple) > maximum:
+        return
+
+    yield triple
+
+    # now do the branches
+    yield from primitive_triple_generator_recursive((2 * m - n, m), maximum)
+    yield from primitive_triple_generator_recursive((2 * m + n, m), maximum)
+    yield from primitive_triple_generator_recursive((m + 2 * n, n), maximum)
+
+
+def primitive_triple_generator_iterative(maximum):
     """
     from https://en.wikipedia.org/wiki/Coprime_integers
     All pairs of positive coprime numbers (m, n) (with m > n) be arranged in
@@ -129,9 +149,7 @@ def primitive_triple_generator(maximum):
     children will also be too high so we can stop exploring that branch.
     """
     stack = [(2, 1)]
-    node_count = 0
     while len(stack) > 0:
-        node_count += 1
         m, n = stack.pop()
         triple = coprimes_to_pythagorean_triple(m, n)
 
@@ -146,11 +164,7 @@ def primitive_triple_generator(maximum):
         stack.append((m + 2 * n, n))  # branch 3
 
 
-def test_primitive_triple_generator():
-    """
-    brute-force find all triples where sum(a, b, c) <= 1000 and compare with
-    primitive_triple_generator(1000).
-    """
+def test_primitive_triple_generator_recursive():
     expected = set([
         (3, 4, 5), (5, 12, 13), (8, 15, 17), (7, 24, 25), (20, 21, 29),
         (12, 35, 37), (9, 40, 41), (28, 45, 53), (11, 60, 61), (16, 63, 65),
@@ -171,7 +185,37 @@ def test_primitive_triple_generator():
         (84, 437, 445), (145, 408, 433), (31, 480, 481)
     ])
 
-    assert_set_equal(set(primitive_triple_generator(1000)), expected)
+    assert_set_equal(
+        set(primitive_triple_generator_recursive((2, 1), 1000)),
+        expected
+    )
+
+
+def test_primitive_triple_generator_iterative():
+    expected = set([
+        (3, 4, 5), (5, 12, 13), (8, 15, 17), (7, 24, 25), (20, 21, 29),
+        (12, 35, 37), (9, 40, 41), (28, 45, 53), (11, 60, 61), (16, 63, 65),
+        (33, 56, 65), (48, 55, 73), (13, 84, 85), (36, 77, 85), (39, 80, 89),
+        (20, 99, 101), (65, 72, 97), (15, 112, 113), (60, 91, 109),
+        (44, 117, 125), (17, 144, 145), (24, 143, 145), (88, 105, 137),
+        (51, 140, 149), (85, 132, 157), (19, 180, 181), (52, 165, 173),
+        (119, 120, 169), (57, 176, 185), (28, 195, 197), (104, 153, 185),
+        (95, 168, 193), (21, 220, 221), (84, 187, 205), (133, 156, 205),
+        (60, 221, 229), (140, 171, 221), (32, 255, 257), (105, 208, 233),
+        (23, 264, 265), (120, 209, 241), (69, 260, 269), (96, 247, 265),
+        (115, 252, 277), (68, 285, 293), (25, 312, 313), (160, 231, 281),
+        (36, 323, 325), (161, 240, 289), (75, 308, 317), (136, 273, 305),
+        (207, 224, 305), (27, 364, 365), (204, 253, 325), (76, 357, 365),
+        (175, 288, 337), (180, 299, 349), (40, 399, 401), (225, 272, 353),
+        (135, 352, 377), (29, 420, 421), (152, 345, 377), (252, 275, 373),
+        (189, 340, 389), (120, 391, 409), (87, 416, 425), (228, 325, 397),
+        (84, 437, 445), (145, 408, 433), (31, 480, 481)
+    ])
+
+    assert_set_equal(
+        set(primitive_triple_generator_iterative(1000)),
+        expected
+    )
 
 
 def triple_with_sum(n):
